@@ -23,7 +23,7 @@ public class Person {
 	@ManyToMany
 	List<Person> persons;
 	
-	@ManyToMany(mappedBy="persons", cascade={CascadeType.REFRESH})
+	@ManyToMany(mappedBy="persons", cascade={CascadeType.REFRESH, CascadeType.PERSIST})
 	List<Person> amis;
 
 	@ManyToMany
@@ -53,6 +53,18 @@ public class Person {
 		this.amis = new ArrayList<Person>();
 		this.residences = new ArrayList<Maison>();
 		residences.add(maison);
+	}
+	
+	public Person(String nom, String prenom, String email, Maison maison, Person ami) {
+		super();
+		this.nom = nom;
+		this.prenom = prenom;
+		this.email = email;
+		this.amis = new ArrayList<Person>();
+		this.residences = new ArrayList<Maison>();
+		residences.add(maison);
+		this.amis = new ArrayList<Person>();
+		amis.add(ami);
 	}
 
 	public String getNom() {
