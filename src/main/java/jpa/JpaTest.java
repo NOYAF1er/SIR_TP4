@@ -22,7 +22,7 @@ public class JpaTest {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		EntityManagerFactory factory = Persistence.createEntityManagerFactory("example");
+		EntityManagerFactory factory = Persistence.createEntityManagerFactory("hsqlbd");
 		EntityManager manager = factory.createEntityManager();
 		JpaTest test = new JpaTest(manager);
 
