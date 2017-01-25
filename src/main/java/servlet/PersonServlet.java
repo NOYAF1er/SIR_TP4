@@ -33,6 +33,14 @@ public class PersonServlet extends HttpServlet {
 	}
 	
 	@Override
+	public void destroy() {
+		// TODO Auto-generated method stub
+		super.destroy();
+		manager.close();
+		factory.close();
+	}
+	
+	@Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         
 		List<Person> resultList = manager.createQuery("Select a From Person a", Person.class).getResultList();
