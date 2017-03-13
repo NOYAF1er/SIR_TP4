@@ -1,5 +1,6 @@
 package domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -58,7 +59,7 @@ public class Maison {
 		return chauffages;
 	}
 
-	public void setChauffages(List<SmartDevice> chauffages) {
+	public void setChauffages(ArrayList<SmartDevice> chauffages) {
 		this.chauffages = chauffages;
 	}
 
@@ -67,7 +68,7 @@ public class Maison {
 		return EquipementElectroniques;
 	}
 
-	public void setEquipementElectroniques(List<SmartDevice> equipementElectroniques) {
+	public void setEquipementElectroniques(ArrayList<SmartDevice> equipementElectroniques) {
 		EquipementElectroniques = equipementElectroniques;
 	}
 
