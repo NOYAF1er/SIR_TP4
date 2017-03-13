@@ -18,7 +18,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import domain.Person;
 
-@WebServlet(name = "persons", urlPatterns = { "/persons" })
+@WebServlet(
+		name = "persons", 
+		urlPatterns = { "/persons" }
+)
 public class PersonServlet extends HttpServlet {
 	
 	private EntityManager manager;
@@ -43,24 +46,7 @@ public class PersonServlet extends HttpServlet {
 	@Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         
-		List<Person> resultList = manager.createQuery("Select a From Person a", Person.class).getResultList();
-//		req.setAttribute("nbpersons", resultList.size());
-//		req.setAttribute("persons", resultList);
-		
-		
-		PrintWriter out = resp.getWriter();
-		out.println("<h1>Liste des personnes</h1>");
-		out.println("<h3>Nombre de personnes:</h3>" + resultList.size());
-		out.println("<ul>");
-		for (Person next : resultList) {
-			out.println("<li><ul>");
-				out.println("<li>Nom: " + next.getNom());
-				out.println("<li>Prenom: " + next.getPrenom());
-				out.println("<li>Email: " + next.getEmail());
-			out.println("</ul></li>");
-		}
-		out.println("</ul>");
-		out.println("<a href='personform.html'>Ajouter</a>");
+		personsView(resp); //Affiche la liste des personnes
 		
 //		RequestDispatcher dispatcher;
 //		dispatcher = req.getRequestDispatcher("persons.jsp");
@@ -85,15 +71,41 @@ public class PersonServlet extends HttpServlet {
 		
 		tx.commit(); // Fermeture de la transaction
 		
-		List<Person> resultList = manager.createQuery("Select a From Person a", Person.class).getResultList();
+		/*List<Person> resultList = manager.createQuery("Select a From Person a", Person.class).getResultList();
 		request.setAttribute("nbpersons", resultList.size());
 				
 		RequestDispatcher dispatcher;
 		dispatcher = request.getRequestDispatcher("persons.jsp");
 		dispatcher.forward(request, response);
+		*/
+		
+		personsView(response); //Affiche la liste des personnes
 		
 //		response.sendRedirect("persons.jsp");
 //		return;
+		
+	}
+	
+	private void personsView(HttpServletResponse resp) throws IOException{
+		
+		List<Person> resultList = manager.createQuery("Select a From Person a", Person.class).getResultList();
+//		req.setAttribute("nbpersons", resultList.size());
+//		req.setAttribute("persons", resultList);
+		
+		
+		PrintWriter out = resp.getWriter();
+		out.println("<h1>Liste des personnes</h1>");
+		out.println("<h3>Nombre de personnes:</h3>" + resultList.size());
+		out.println("<ul>");
+		for (Person next : resultList) {
+			out.println("<li><ul>");
+				out.println("<li>Nom: " + next.getNom());
+				out.println("<li>Prenom: " + next.getPrenom());
+				out.println("<li>Email: " + next.getEmail());
+			out.println("</ul></li>");
+		}
+		out.println("</ul>");
+		out.println("<a href='personform.html'>Ajouter</a>");
 		
 	}
 
