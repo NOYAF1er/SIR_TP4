@@ -10,6 +10,7 @@ import javax.ws.rs.core.MediaType;
 import domain.Chauffage;
 import domain.EquipementElectronique;
 import domain.Maison;
+import domain.SmartDevice;
 
 @Path("/hello")
 public class SampleWebService {
@@ -34,6 +35,12 @@ public class SampleWebService {
 		EquipementElectronique electro = new EquipementElectronique();
 		electro.setConsoMoyenne(200);
 		electro.setMaison(maison);
+		
+		ArrayList<SmartDevice> equipements = new ArrayList<SmartDevice>();
+		equipements.add(chauffage);
+		equipements.add(electro);
+		
+		maison.setEquipements(equipements);
 		
 		return maison;
 	}
