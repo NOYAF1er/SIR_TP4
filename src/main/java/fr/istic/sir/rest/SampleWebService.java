@@ -30,11 +30,11 @@ public class SampleWebService {
 		
 		Chauffage chauffage = new Chauffage();
 		chauffage.setPuissance(500);
-		chauffage.setMaison(maison);
+		//chauffage.setMaison(maison);
 		
 		EquipementElectronique electro = new EquipementElectronique();
 		electro.setConsoMoyenne(200);
-		electro.setMaison(maison);
+		//electro.setMaison(maison);
 		
 		ArrayList<SmartDevice> equipements = new ArrayList<SmartDevice>();
 		equipements.add(chauffage);
