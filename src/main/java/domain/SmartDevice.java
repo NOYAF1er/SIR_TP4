@@ -27,5 +27,10 @@ public abstract class SmartDevice {
 	public void setMaison(Maison maison) {
 		this.maison = maison;
 	}
+
+	@Override
+	public String toString() {
+		return "SmartDevice [id=" + id + ", maison=" + maison + "]";
+	}
 	
 }

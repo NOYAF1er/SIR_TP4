@@ -31,5 +31,10 @@ public class EquipementElectronique extends SmartDevice {
 	public void setConsoMoyenne(double consoMoyenne) {
 		this.consoMoyenne = consoMoyenne;
 	}
+
+	@Override
+	public String toString() {
+		return "EquipementElectronique [consoMoyenne=" + consoMoyenne + "]";
+	}
 	
 }

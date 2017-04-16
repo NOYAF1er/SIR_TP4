@@ -1,7 +1,6 @@
 package domain;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -15,8 +14,8 @@ public class Maison {
 	long id;
 	long taille;
 	int nbrePiece;
-	ArrayList<SmartDevice> equipements;
-	ArrayList<Person> habitants;
+	Collection<SmartDevice> equipements;
+	Collection<Person> habitants;
 	
 	public long getTaille() {
 		return taille;
@@ -33,11 +32,11 @@ public class Maison {
 	}
 	
 	@ManyToMany(mappedBy="residences")
-	public ArrayList<Person> getHabitants() {
+	public Collection<Person> getHabitants() {
 		return habitants;
 	}
 
-	public void setHabitants(ArrayList<Person> habitants) {
+	public void setHabitants(Collection<Person> habitants) {
 		this.habitants = habitants;
 	}
 
@@ -54,12 +53,18 @@ public class Maison {
 	}
 
 	@OneToMany(mappedBy="maison", cascade={CascadeType.REMOVE, CascadeType.REFRESH})
-	public ArrayList<SmartDevice> getEquipements() {
+	public Collection<SmartDevice> getEquipements() {
 		return equipements;
 	}
 
-	public void setEquipements(ArrayList<SmartDevice> chauffages) {
+	public void setEquipements(Collection<SmartDevice> chauffages) {
 		this.equipements = chauffages;
+	}
+	
+	@Override
+	public String toString() {
+		return "Maison [id=" + id + ", taille=" + taille + ", nbrePiece=" + nbrePiece + ", equipements=" + equipements
+				+ ", habitants=" + habitants + "]";
 	}
 	
 }

@@ -30,5 +30,10 @@ public class Chauffage extends SmartDevice {
 	public void setPuissance(double puissance) {
 		this.puissance = puissance;
 	}
+
+	@Override
+	public String toString() {
+		return "Chauffage [puissance=" + puissance + "]";
+	}
 	
 }
