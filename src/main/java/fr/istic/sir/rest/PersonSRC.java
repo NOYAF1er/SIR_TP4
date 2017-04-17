@@ -1,111 +1,54 @@
 package fr.istic.sir.rest;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
-import domain.Maison;
 import domain.Person;
+import jpa.PersonDAO;
 
 @Path("/personne")
 public class PersonSRC {
 	
+	PersonDAO dao = new PersonDAO();
+	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Person> getList() {
-		EntityManagerFactory factory = Persistence.createEntityManagerFactory("hsqlbd");
-		EntityManager manager = factory.createEntityManager();
-		List<Person> resultList = new ArrayList<Person>();
-		
-		// Ouverture de la transaction
-		EntityTransaction tx = manager.getTransaction();
-		tx.begin();
-		
-		//Instanciation et persistence des objets
-		try {
-			resultList = manager.createQuery("Select a From Person a", Person.class).getResultList();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		// Fermeture de la transaction
-		tx.commit();
-		
-		//Fermeture de l'unité de travail JPA
-		manager.close();
-		
-		/*Person jhon = new Person("Jhon", "Doe", "jhon.doe@ema.il");
-		Person jane = new Person("Jane", "Doe", "jane.doe@ema.il");
-		
-		List<Person> persons = new ArrayList<Person>();
-		persons.add(jane);
-		persons.add(jhon);*/
-
-		return resultList;
+	public Collection<Person> getList() {
+		return dao.list();		
 	}
 
 	@POST
 	@Path("/{id}")	
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Person> get(@PathParam("id") String id) {
-		Person jhon = new Person("Jhon", "Doe", "jhon.doe@ema.il");
-		Person jane = new Person("Jane", "Doe", "jane.doe@ema.il");
-		
-		List<Person> persons = new ArrayList<Person>();
-		persons.add(jane);
-		persons.add(jhon);
-
-
-		return persons;
+	public Person getOne(@PathParam("id") String id) {
+		Long _id = Long.parseLong(id);
+		return dao.read(_id);
 	}
 	
-	
-	@GET
-	@Path("/init")	
-	@Produces(MediaType.TEXT_PLAIN)
-	public String init() {
-		EntityManagerFactory factory = Persistence.createEntityManagerFactory("hsqlbd");
-		EntityManager manager = factory.createEntityManager();
+	@POST
+	@Path("/save")	
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response save(@QueryParam("nom") String nom, @QueryParam("prenom") String prenom, @QueryParam("email") String email) {
+		Person person = new Person();
 		
-		// Ouverture de la transaction
-		EntityTransaction tx = manager.getTransaction();
-		tx.begin();
+		person.setNom(nom);
+		person.setPrenom(prenom);
+		person.setEmail(email);
 		
-		//Instanciation et persistence des objets
-		try {
-			int numOfPersons = manager.createQuery("Select a From Person a", Person.class).getResultList().size();
-			if (numOfPersons == 0) {
-				Maison residences = new Maison();
-				manager.persist(residences);
-
-				manager.persist(new Person("Jhon", "Doe", "jhon@doe.com", residences));
-				manager.persist(new Person("Louis", "1er", "louis@mail.com", residences));
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		dao.create(person);
 		
-		// Fermeture de la transaction
-		tx.commit();
-				
-		//Fermeture de l'unité de travail JPA
-		manager.close();
-
-		return "done";
-	}
-	
-	
+		return Response.status(200).entity(person.toString()).build();
+	}	
 	
 }

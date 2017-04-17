@@ -1,66 +1,52 @@
 package fr.istic.sir.rest;
 
-import java.util.ArrayList;
+import java.util.Collection;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
-import domain.Chauffage;
-import domain.EquipementElectronique;
 import domain.Maison;
-import domain.SmartDevice;
+import jpa.MaisonDAO;
 
 @Path("/maison")
 public class MaisonSRC {
 	
+	MaisonDAO dao = new MaisonDAO();
+	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Maison getMaison() {
-		Maison maison = new Maison();
-		maison.setTaille(200);
-		maison.setNbrePiece(5);
-		
-		Chauffage chauffage = new Chauffage();
-		chauffage.setPuissance(500);
-		//chauffage.setMaison(maison);
-		
-		EquipementElectronique electro = new EquipementElectronique();
-		electro.setConsoMoyenne(200);
-		//electro.setMaison(maison);
-		
-		ArrayList<SmartDevice> equipements = new ArrayList<SmartDevice>();
-		equipements.add(chauffage);
-		equipements.add(electro);
-		
-		maison.setEquipements(equipements);
-		
-		return maison;
+	public Collection<Maison> getList() {
+		return dao.list();
 	}
 	
-	@GET
-	@Produces(MediaType.TEXT_PLAIN)
-	public String sayHello() {
-		Maison maison = new Maison();
-		maison.setTaille(200);
-		maison.setNbrePiece(5);
-		
-		Chauffage chauffage = new Chauffage();
-		chauffage.setPuissance(500);
-		//chauffage.setMaison(maison);
-		
-		EquipementElectronique electro = new EquipementElectronique();
-		electro.setConsoMoyenne(200);
-		//electro.setMaison(maison);
-		
-		ArrayList<SmartDevice> equipements = new ArrayList<SmartDevice>();
-		equipements.add(chauffage);
-		equipements.add(electro);
-		
-		maison.setEquipements(equipements);
-		
-		return maison.toString();
-	}	
+	@POST
+	@Path("/{id}")	
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Maison getOne(@PathParam("id") String id) {
+		Long _id = Long.parseLong(id);
+		return dao.read(_id);
+	}
 	
+	@POST
+	@Path("/save")	
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response save(@QueryParam("nbrePiece") String nbrePiece, @QueryParam("taille") String taille) {
+		Maison maison = new Maison();
+		
+		maison.setNbrePiece(Integer.parseInt(nbrePiece));
+		maison.setTaille(Long.parseLong(taille));
+		
+		dao.create(maison);
+		
+		return Response.status(200).entity(maison.toString()).build();
+	}	
 }
